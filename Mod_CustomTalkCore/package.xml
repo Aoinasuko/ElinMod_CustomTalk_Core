@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Meta>
+  <title>CustomTalk Core</title>
+  <id>bep_customtalkcore</id>
+  <tags>General,NPC</tags>
+  <author>aoi_nasuko</author>
+  <builtin>false</builtin>
+  <loadPriority>999999</loadPriority>
+  <version>0.23.83</version>
+  <description>NPCにカスタム口調の概念を追加するMODです。
+  </description>
+</Meta>
