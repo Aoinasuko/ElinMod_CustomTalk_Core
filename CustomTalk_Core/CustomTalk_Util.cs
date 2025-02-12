@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace BEP.CustomTalkCore
 {
@@ -177,6 +178,64 @@ namespace BEP.CustomTalkCore
 					}
 				}
 
+				/* 置き換え文字列 */
+				// [IsRep1:***] : 置き換え文字列内に***が含まれている
+				if (row.Contains("[IsRep1:")) {
+					string ptn = @"(\[IsRep1:.*\])";
+					Match matche = Regex.Match(row_output, ptn);
+					var result = matche.Value;
+					string rep_1 = result.Replace("[IsRep1:","");
+					rep_1 = rep_1.Replace("]","");
+					if (CustomTalkCore.RepCheck_1 != null && CustomTalkCore.RepCheck_1.Contains(rep_1)) {
+						row_output = Regex.Replace(row_output,ptn,"");
+						IsNormal = false;
+					} else {
+						continue;
+					}
+				}
+				// [IsRep2:***]
+				if (row.Contains("[IsRep2:")) {
+					string ptn = @"(\[IsRep2:.*\])";
+					Match matche = Regex.Match(row_output, ptn);
+					var result = matche.Value;
+					string rep_2 = result.Replace("[IsRep2:","");
+					rep_2 = rep_2.Replace("]","");
+					if (CustomTalkCore.RepCheck_2 != null && CustomTalkCore.RepCheck_2.Contains(rep_2)) {
+						row_output = Regex.Replace(row_output,ptn,"");
+						IsNormal = false;
+					} else {
+						continue;
+					}
+				}
+				// [IsRep3:***]
+				if (row.Contains("[IsRep3:")) {
+					string ptn = @"(\[IsRep3:.*\])";
+					Match matche = Regex.Match(row_output, ptn);
+					var result = matche.Value;
+					string rep_3 = result.Replace("[IsRep3:","");
+					rep_3 = rep_3.Replace("]","");
+					if (CustomTalkCore.RepCheck_3 != null && CustomTalkCore.RepCheck_3.Contains(rep_3)) {
+						row_output = Regex.Replace(row_output,ptn,"");
+						IsNormal = false;
+					} else {
+						continue;
+					}
+				}
+				// [IsRep4:***]
+				if (row.Contains("[IsRep4:")) {
+					string ptn = @"(\[IsRep4:.*\])";
+					Match matche = Regex.Match(row_output, ptn);
+					var result = matche.Value;
+					string rep_4 = result.Replace("[IsRep4:","");
+					rep_4 = rep_4.Replace("]","");
+					if (CustomTalkCore.RepCheck_4 != null && CustomTalkCore.RepCheck_4.Contains(rep_4)) {
+						row_output = Regex.Replace(row_output,ptn,"");
+						IsNormal = false;
+					} else {
+						continue;
+					}
+				}
+
 				/* 特殊条件 */
 				// [IsNormal] : 通常状態
 				if (row.Contains("[IsNormal]")) {
@@ -193,9 +252,9 @@ namespace BEP.CustomTalkCore
 				for (int i = 0; i < outputlist.Count; i++) {
 					// 最後の要素の場合は改行を入れない
 					if (i == outputlist.Count - 1) {
-						output += outputlist[i];
+						output += outputlist[i].Replace(Environment.NewLine, "");
 					} else {
-						output += outputlist[i] + Environment.NewLine;
+						output += outputlist[i].Replace(Environment.NewLine, "") + Environment.NewLine;
 					}
 				}
 			} else {

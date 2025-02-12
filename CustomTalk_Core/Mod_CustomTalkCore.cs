@@ -24,6 +24,12 @@ namespace BEP.CustomTalkCore
         // 吹き出しを表示させるフラグ
         public static bool ChatFlag = false;
 
+		// 置き換え部分のチェック
+		public static string RepCheck_1 = "";
+		public static string RepCheck_2 = "";
+		public static string RepCheck_3 = "";
+		public static string RepCheck_4 = "";
+
         /// <summary>
         /// Harmonyパッチを掛ける
         /// </summary>

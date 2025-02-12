@@ -21,6 +21,8 @@ namespace BEP.CustomTalkCore
             if (__instance is Chara)
             {
                 CustomTalkCore.TalkChara = (Chara)__instance;
+				CustomTalkCore.RepCheck_1 = ref1;
+				CustomTalkCore.RepCheck_2 = ref2;
             }
         }
     }
@@ -42,6 +44,10 @@ namespace BEP.CustomTalkCore
             if (__instance is Chara)
             {
                 CustomTalkCore.TalkChara = (Chara)__instance;
+				CustomTalkCore.RepCheck_1 = Msg.GetName(c1);
+				CustomTalkCore.RepCheck_2 = Msg.GetName(c2);
+				CustomTalkCore.RepCheck_3 = ref1;
+				CustomTalkCore.RepCheck_4 = ref2;
             }
         }
     }
@@ -62,6 +68,9 @@ namespace BEP.CustomTalkCore
             if (__instance is Chara)
             {
                 CustomTalkCore.TalkChara = (Chara)__instance;
+				CustomTalkCore.RepCheck_1 = Msg.GetName(c1);
+				CustomTalkCore.RepCheck_2 = ref1;
+				CustomTalkCore.RepCheck_3 = ref2;
             }
         }
     }
