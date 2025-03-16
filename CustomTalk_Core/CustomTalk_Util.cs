@@ -245,6 +245,14 @@ namespace BEP.CustomTalkCore
 						continue;
 					}
 				}
+
+				/* 特殊文字列置き換え */
+				if (row.Contains("[CharaName]")) {
+					row_output = row_output.Replace("[CharaName]", CustomTalkCore.TalkChara.NameSimple);
+				}
+				if (row.Contains("[PCName]")) {
+					row_output = row_output.Replace("[PCName]", EClass.pc.NameSimple);
+				}
 				outputlist.Add(row_output);
 			}
 			// 候補を順に文字列に入れていく
