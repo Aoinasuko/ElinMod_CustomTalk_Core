@@ -247,11 +247,23 @@ namespace BEP.CustomTalkCore
 				}
 
 				/* 特殊文字列置き換え */
+				// 発言者の名前表示
 				if (row.Contains("[CharaName]")) {
 					row_output = row_output.Replace("[CharaName]", CustomTalkCore.TalkChara.NameSimple);
 				}
+				// PCの名前表示
 				if (row.Contains("[PCName]")) {
 					row_output = row_output.Replace("[PCName]", EClass.pc.NameSimple);
+				}
+				// 音を鳴らす
+				if (row.Contains("[Sound:")) {
+					string ptn = @"(\[Sound:.*\])";
+					Match matche = Regex.Match(row_output, ptn);
+					var result = matche.Value;
+					string sound = result.Replace("[Sound:","");
+					sound = sound.Replace("]","");
+					CustomTalkCore.TalkChara.PlaySound(sound);
+					row_output = Regex.Replace(row_output,ptn,"");
 				}
 				outputlist.Add(row_output);
 			}
