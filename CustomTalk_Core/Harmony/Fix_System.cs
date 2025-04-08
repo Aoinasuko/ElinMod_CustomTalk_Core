@@ -81,4 +81,44 @@ namespace BEP.CustomTalkCore
             CustomTalkCore.TalkChara = null;
         }
     }
+
+	// キャラが喋る時、カスタム口調のデータがあればそれで喋る(GetTalkText)
+    [HarmonyPatch(typeof(Card), nameof(Card.GetTalkText))]
+	[HarmonyPatch(new Type[]
+    {
+        typeof(string),
+		typeof(bool),
+		typeof(bool)
+    })]
+    internal class Fix_GetTalkText
+    {
+        [HarmonyPostfix]
+        public static void Postfix(ref Card __instance, ref string __result, string idTopic, bool stripPun, bool useDefault)
+        {
+			if (__instance is Chara) {
+				Chara chara = __instance as Chara;
+				if (CustomTalk_Util.HasCustomTalk(chara))
+				{
+					CustomTalkCore.TalkChara = chara;
+					string customid = CustomTalkCore.TalkChara.GetObj<string>(745001);
+					LangCustomGame.Row row = CustomTalkCore.TryGet(customid, idTopic);
+					if (row != null)
+					{
+						string text_base = row.GetText("text");
+						// 行をリスト化
+						List<string> rowList = CustomTalk_Util.FilterStringRow(text_base).Split(Environment.NewLine.ToCharArray()).ToList();
+						string text = "";
+						if (rowList.Count > 0) {
+							text = rowList.RandomItem();
+						} else {
+							__result = text;
+							return;
+						}
+						__result = text;
+					}
+				}
+			}
+        }
+    }
+
 }

@@ -65,6 +65,8 @@ namespace BEP.CustomTalkCore
                     }
                     // システムメッセージ実装分の読み込み
                     ModUtil.ImportExcel(source, "CustomTalk_System", CustomGame);
+					// CharaTalk分の読み込み
+                    ModUtil.ImportExcel(source, "CustomTalk_CharaTalk", CustomGame);
                     // カスタム口調強制化設定の読み込み
                     ModUtil.ImportExcel(source, "CustomTalk_CharaSetting", CustomTalkCharaSetting);
                 }

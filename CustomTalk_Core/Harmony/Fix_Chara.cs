@@ -1,5 +1,7 @@
 using HarmonyLib;
 using System;
+using System.Linq;
+using UnityEngine;
 
 namespace BEP.CustomTalkCore
 {
@@ -89,6 +91,63 @@ namespace BEP.CustomTalkCore
                     __instance.TalkTopic();
                 }
             }
+        }
+    }
+
+	/// <summary>
+    /// カスタム口調で特定の口調を持っているかチェック
+    /// </summary>
+    [HarmonyPatch(typeof(Card), "HasTalk")]
+    [HarmonyPatch(new Type[]
+    {
+        typeof(string)
+    })]
+    internal class Fix_HasTalk
+    {
+        [HarmonyPostfix]
+        public static void Postfix(ref Card __instance, ref bool __result, string idTopic)
+        {
+			if (__instance is Chara) {
+				Chara chara = (Chara)__instance;
+				if (CustomTalk_Util.HasCustomTalk(chara))
+				{
+					if (CustomTalkCore.CustomGame.rows.Any(x => x.customid == chara.GetObj<string>(745001) && x.id == idTopic)) {
+						__result = true;
+					} else {
+						__result = false;
+					}
+				}
+			}
+        }
+    }
+
+	/// <summary>
+    /// カスタム口調でrumorを持っている場合、その内容で固定化される
+    /// </summary>
+    [HarmonyPatch(typeof(DramaCustomSequence), "GetRumor")]
+    [HarmonyPatch(new Type[]
+    {
+        typeof(Chara)
+    })]
+    internal class Fix_GetRumor
+    {
+        [HarmonyPostfix]
+        public static void Postfix(ref DramaCustomSequence __instance, ref string __result, Chara c)
+        {
+			if (CustomTalk_Util.HasCustomTalk(c))
+			{
+				string customid = CustomTalkCore.TalkChara.GetObj<string>(745001);
+				LangCustomGame.Row row = CustomTalkCore.TryGet(customid, "rumor");
+				if (row != null)
+				{
+					if (c.interest <= 0)
+					{
+						__result = __instance.GetText(c, "rumor", "bored");
+					} else {
+						__result = c.GetTalkText("rumor");
+					}
+				}
+			}
         }
     }
 }
